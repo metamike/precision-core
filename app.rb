@@ -1,3 +1,4 @@
+require 'json'
 require 'sinatra'
 
 PROJECT_ROOT = File.expand_path(File.dirname(__FILE__))
@@ -8,13 +9,15 @@ Dir[File.join(PROJECT_ROOT, "lib", "precision", "api", "init", "*.rb")].each do 
 end
 
 module Precision
+module API
 
-  class API < Sinatra::Base
-
-    get '/' do
-      "Why, hello!"
-    end
-
+  class Server < Sinatra::Base
   end
 
 end
+end
+
+Dir[File.join(PROJECT_ROOT, "lib", "precision", "api", "routes", "**", "*.rb")].each do |file|
+  require file
+end
+
