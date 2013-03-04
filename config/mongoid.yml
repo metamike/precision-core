@@ -1,9 +1,18 @@
 development:
   sessions:
     default:
-      database: mongoid
+      database: precision
       hosts:
         - localhost:27017
+  options:
+    allow_dynamic_fields: false
+    raise_not_found_error: false
+test:
+  sessions:
+    default:
+      database: precision-test
+      hosts:
+       - localhost:27017
   options:
     allow_dynamic_fields: false
     raise_not_found_error: false

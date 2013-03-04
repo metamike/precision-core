@@ -12,6 +12,9 @@ module Precision
 module API
 
   class Server < Sinatra::Base
+
+    set :environment, Env.get
+
   end
 
 end
