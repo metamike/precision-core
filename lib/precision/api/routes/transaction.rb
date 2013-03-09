@@ -3,7 +3,13 @@ require 'precision/api/model/transaction'
 
 class Precision::API::Server < Sinatra::Base
 
-  get '/transaction/:id' do |id|
+  get '/transactions' do
+    content_type :json
+    transactions = Precision::API::Transaction.all
+    transactions.to_json
+  end
+
+  get '/transactions/:id' do |id|
     content_type :json
     transaction = Precision::API::Transaction.find(id)
     unless transaction.nil?
@@ -13,7 +19,7 @@ class Precision::API::Server < Sinatra::Base
     end
   end
  
-  post '/transaction' do
+  post '/transactions' do
     begin
       hash = JSON.parse(request.body.read)
       raise "account is required" if hash['account'].nil?
@@ -32,7 +38,7 @@ class Precision::API::Server < Sinatra::Base
     end
   end
 
-  delete '/transaction/:id' do |id|
+  delete '/transactions/:id' do |id|
     transaction = Precision::API::Transaction.find(id)
     unless transaction.nil?
       transaction.destroy

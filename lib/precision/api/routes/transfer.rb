@@ -10,6 +10,7 @@ class Precision::API::Server < Sinatra::Base
   #   date,
   #   amount
   # }
+  # TODO This operation should be atomic or at least isolated
   post '/transfer' do
     begin
       hash = JSON.parse(request.body.read)

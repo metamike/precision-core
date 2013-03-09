@@ -2,7 +2,13 @@ require 'precision/api/model/account'
 
 class Precision::API::Server < Sinatra::Base
 
-  get '/account/:id' do |id|
+  get '/accounts' do
+    content_type :json
+    accounts = Precision::API::Account.all
+    accounts.to_json
+  end
+
+  get '/accounts/:id' do |id|
     content_type :json
     account = Precision::API::Account.find(id)
     unless account.nil?
@@ -12,7 +18,7 @@ class Precision::API::Server < Sinatra::Base
     end
   end
  
-  post '/account' do
+  post '/accounts' do
     begin
       hash = JSON.parse(request.body.read)
       account = Precision::API::Account.create!(hash)
@@ -25,7 +31,7 @@ class Precision::API::Server < Sinatra::Base
     end
   end
 
-  delete '/account/:id' do |id|
+  delete '/accounts/:id' do |id|
     account = Precision::API::Account.find(id)
     unless account.nil?
       account.destroy
