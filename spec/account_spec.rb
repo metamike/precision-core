@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Accounts' do
 
-  before(:all) do
+  before(:each) do
     @failure = false
     count = Precision::API::Account.all.length
     if count > 0
@@ -18,6 +18,13 @@ describe 'Accounts' do
     @account_2 = Precision::API::Account.create!({
       name: "Test Account to delete"
     })
+    @account_3 = Precision::API::Account.create!({
+      name: "Test Another Account",
+      open_date: Date.parse('2012-11-01')
+    })
+    @accounts = [@account_1, @account_2, @account_3].sort { |a, b|
+      a.name <=> b.name
+    }
   end
 
   context "Find Accounts" do
@@ -25,8 +32,24 @@ describe 'Accounts' do
       get '/accounts'
       last_response.status.should eq 200
       accounts = JSON.parse(last_response.body)
-      accounts.length.should be >= 1
-      (accounts.map { |a| a['id'] }).should include(@account_1.id.to_s)
+      accounts['data'].size.should eq @accounts.size
+      (accounts['data'].map { |a| a['id'] }).should include(
+        *@accounts.map { |a| a.id.to_s }
+      )
+    end
+    it "should paginate through accounts" do
+      offset = 0
+      loop do
+        get "/accounts?offset=#{offset}&limit=1"
+        last_response.status.should eq 200
+        accounts = JSON.parse(last_response.body)
+        accounts['data'].size.should eq 1
+        (accounts['data'].map { |a| a['id'] }).first.should eq @accounts[offset].id.to_s
+        next_chunk = accounts['next']
+        break if next_chunk.nil?
+        offset = next_chunk[/offset=(\d+)/, 1].to_i
+      end
+      offset.should eq @accounts.size - 1
     end
     it "should not find a non-existent account" do
       get '/accounts/123'
@@ -75,7 +98,7 @@ describe 'Accounts' do
     end
   end
 
-  after(:all) do
+  after(:each) do
     Precision::API::Account.all.destroy unless @failure
   end
  

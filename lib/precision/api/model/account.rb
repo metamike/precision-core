@@ -19,6 +19,8 @@ module API
       _id
     end
 
+    default_scope asc(:name)
+
     def to_s
       "#{name}"
     end
@@ -26,8 +28,8 @@ module API
     # Rename _id to id
     def as_json(options = {})
       super(
-        :methods => [:id],
-        :except => [:_id]
+        methods: [:id],
+        except: [:_id]
       )
     end
 
