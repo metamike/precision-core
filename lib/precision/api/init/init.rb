@@ -3,7 +3,7 @@ require 'mongoid'
 class Env
 
   def self.get
-    ENV['RACK_ENV'].to_sym || :development
+    ENV['RACK_ENV'].nil? ? :development : ENV['RACK_ENV'].to_sym
   end
 
 end

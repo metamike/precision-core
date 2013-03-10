@@ -3,8 +3,10 @@ require 'precision/api/model/account'
 class Precision::API::Server < Sinatra::Base
 
   get '/accounts' do
+    offset = params['offset'] || 0
+    limit = params['limit'] || 50
     content_type :json
-    accounts = Precision::API::Account.all
+    accounts = Precision::API::Account.skip(offset).limit(limit)
     accounts.to_json
   end
 
@@ -24,7 +26,7 @@ class Precision::API::Server < Sinatra::Base
       account = Precision::API::Account.create!(hash)
       status 201
       content_type :json
-      {id: account._id}.to_json
+      {id: account.id}.to_json
     rescue => e
       status 422
       e.message

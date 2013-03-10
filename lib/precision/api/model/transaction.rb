@@ -2,8 +2,10 @@ module Precision
 module API
 
   class Transaction
+
     include Mongoid::Document
     include Mongoid::Timestamps
+
     store_in collection: "transactions"
 
     field :description, type: String
@@ -24,6 +26,23 @@ module API
     index({tags: 1})
 
     scope :by_tag, ->(tag) { where(:tags.in => [tag]) }
+
+    def id
+      _id
+    end
+
+    def to_s
+      "#{description} on #{date}"
+    end
+
+    # Rename _id to id
+    def as_json(options = {})
+      super(
+        :methods => [:id],
+        :except => [:_id]
+      )
+    end
+
   end
 
 end

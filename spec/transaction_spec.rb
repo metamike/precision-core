@@ -43,14 +43,14 @@ describe 'Transactions' do
       last_response.status.should eq 404
     end
     it "should find a valid transaction" do
-      get "/transactions/#{@tx_1._id}"
+      get "/transactions/#{@tx_1.id}"
       last_response.status.should eq 200
       hash = JSON.parse(last_response.body)
       hash['description'].should eq @tx_1.description
       hash['amount'].should eq @tx_1.amount
       hash['date'].should eq @tx_1.date.to_s
       hash['tags'].sort.should eq @tx_1.tags.sort
-      hash['account']['_id'].should eq @account_1._id.to_s
+      hash['account']['id'].should eq @account_1.id.to_s
     end
   end
 
@@ -89,9 +89,9 @@ describe 'Transactions' do
       last_response.status.should eq 404
     end
     it "should delete a transaction" do
-      delete "/transactions/#{@tx_2._id}"
+      delete "/transactions/#{@tx_2.id}"
       last_response.status.should eq 200
-      get "/transactions/#{@tx_2._id}"
+      get "/transactions/#{@tx_2.id}"
       last_response.status.should eq 404
     end
   end

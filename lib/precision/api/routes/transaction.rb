@@ -31,7 +31,7 @@ class Precision::API::Server < Sinatra::Base
       transaction.save!
       status 201
       content_type :json
-      {id: transaction._id}.to_json
+      {id: transaction.id}.to_json
     rescue => e
       status 422
       e.message

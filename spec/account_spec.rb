@@ -26,14 +26,14 @@ describe 'Accounts' do
       last_response.status.should eq 200
       accounts = JSON.parse(last_response.body)
       accounts.length.should be >= 1
-      (accounts.map { |a| a['_id'] }).should include(@account_1._id.to_s)
+      (accounts.map { |a| a['id'] }).should include(@account_1.id.to_s)
     end
     it "should not find a non-existent account" do
       get '/accounts/123'
       last_response.status.should eq 404
     end
     it "should find a valid account" do
-      get "/accounts/#{@account_1._id}"
+      get "/accounts/#{@account_1.id}"
       last_response.status.should eq 200
       hash = JSON.parse(last_response.body)
       hash['name'].should eq @account_1.name
@@ -68,9 +68,9 @@ describe 'Accounts' do
       last_response.status.should eq 404
     end
     it "should delete an account" do
-      delete "/accounts/#{@account_2._id}"
+      delete "/accounts/#{@account_2.id}"
       last_response.status.should eq 200
-      get "/accounts/#{@account_2._id}"
+      get "/accounts/#{@account_2.id}"
       last_response.status.should eq 404
     end
   end
