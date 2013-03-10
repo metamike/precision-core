@@ -19,7 +19,7 @@ module API
       _id
     end
 
-    default_scope asc(:name)
+    default_scope order_by(:name.asc, :_id.asc)
 
     def to_s
       "#{name}"

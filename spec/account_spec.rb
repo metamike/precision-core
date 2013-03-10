@@ -36,6 +36,7 @@ describe 'Accounts' do
       (accounts['data'].map { |a| a['id'] }).should include(
         *@accounts.map { |a| a.id.to_s }
       )
+      accounts['next'].should be_nil
     end
     it "should paginate through accounts" do
       offset = 0

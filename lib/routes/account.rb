@@ -5,10 +5,11 @@ class Precision::API::Server < Sinatra::Base
   get '/accounts' do
     offset = params.has_key?('offset') ? params['offset'].to_i : 0
     limit = params.has_key?('limit') ? params['limit'].to_i : 50
-    content_type :json
     accounts = Precision::API::Account.skip(offset).limit(limit + 1).to_a
     num_accounts_plus1 = accounts.size
     accounts.pop if num_accounts_plus1 == limit + 1
+
+    content_type :json
     {
       data: accounts,
       :next => num_accounts_plus1 > limit ? "#{request.scheme}://#{request.host}:#{request.port}#{request.path}?offset=#{offset + limit}&limit=#{limit}" : nil

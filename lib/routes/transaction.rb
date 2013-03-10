@@ -4,9 +4,17 @@ require 'model/transaction'
 class Precision::API::Server < Sinatra::Base
 
   get '/transactions' do
+    offset = params.has_key?('offset') ? params['offset'].to_i : 0
+    limit = params.has_key?('limit') ? params['limit'].to_i : 50
+    txs = Precision::API::Transaction.skip(offset).limit(limit + 1).to_a
+    num_txs_plus1 = txs.size
+    txs.pop if num_txs_plus1 == limit + 1
+
     content_type :json
-    transactions = Precision::API::Transaction.all
-    transactions.to_json
+    {
+      data: txs,
+      :next => num_txs_plus1 > limit ? "#{request.scheme}://#{request.host}:#{request.port}#{request.path}?offset=#{offset + limit}&limit=#{limit}" : nil
+    }.to_json
   end
 
   get '/transactions/:id' do |id|

@@ -25,6 +25,7 @@ module API
 
     index({tags: 1})
 
+    default_scope order_by(:date.asc, :description.asc, :_id.asc)
     scope :by_tag, ->(tag) { where(:tags.in => [tag]) }
 
     def id
