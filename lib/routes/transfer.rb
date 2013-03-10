@@ -1,5 +1,5 @@
 require 'date'
-require 'precision/api/model/transaction'
+require 'model/transaction'
 
 class Precision::API::Server < Sinatra::Base
 

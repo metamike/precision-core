@@ -1,4 +1,4 @@
-require 'precision/api/model/account'
+require 'model/account'
 
 class Precision::API::Server < Sinatra::Base
 

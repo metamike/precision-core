@@ -1,5 +1,5 @@
-require 'precision/api/model/account'
-require 'precision/api/model/transaction'
+require 'model/account'
+require 'model/transaction'
 
 class Precision::API::Server < Sinatra::Base
 

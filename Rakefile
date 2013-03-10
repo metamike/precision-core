@@ -24,7 +24,7 @@ task :console do
 
   $env = :development
 
-  Dir[File.join(PROJECT_ROOT, "lib", "precision", "api", "init", "*.rb")].each do |file|
+  Dir[File.join(PROJECT_ROOT, "lib", "init", "**", "*.rb")].each do |file|
     require file
   end
 
